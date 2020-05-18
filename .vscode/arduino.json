@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:leonardo",
+    "sketch": "control-tester.ino",
+    "port": "COM3"
+}
