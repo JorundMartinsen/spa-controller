@@ -1,3 +1,5 @@
+#include <EEPROM.h>
+
 int Pump1 = 2;
 int Pump1High = 3;
 int Pump2 = 4;
@@ -6,6 +8,8 @@ int Oxidizer = 6;
 int Circulation = 7;
 int Relay7 = 8;
 int Relay8 = 9;
+
+int stateAddress = 0;
 
 int state = 0;
 int readDelayCounter = 0;
@@ -35,6 +39,7 @@ void setup()
     }
     Serial.println("Welcome to Caldera Utopia - modified");
     Serial.println("Type help for a list of commands");
+    state = EEPROM.read(stateAddress);
 }
 
 void loop()
@@ -72,6 +77,7 @@ void loop()
             Serial.println("circulation\truns the circulation program");
             Serial.println("run\truns the main program");
         }
+        EEPROM.update(stateAddress, state);
     }
     switch (state)
     {
