@@ -1,5 +1,5 @@
 {
-    "board": "arduino:avr:uno",
+    "board": "arduino:avr:leonardo",
     "sketch": "spa-controller.ino",
-    "port": "COM5"
+    "port": "COM3"
 }

@@ -1,5 +1,3 @@
-#include <EEPROM.h>
-
 int Pump1 = 2;
 int Pump1High = 3;
 int Pump2 = 4;
@@ -7,12 +5,12 @@ int Blower = 5;
 int Oxidizer = 6;
 int Circulation = 7;
 int Relay7 = 8;
-int Relay8 = 9;
 
 int stateAddress = 0;
 
 int state = 0;
 int readDelayCounter = 0;
+boolean outputState[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 void delayer(int minutes = 0, int seconds = 1)
 {
@@ -21,25 +19,30 @@ void delayer(int minutes = 0, int seconds = 1)
 
 void TurnOn(int Relay)
 {
+    outputState[Relay] = true;
     digitalWrite(Relay, LOW);
 }
 
 void TurnOff(int Relay)
 {
+    outputState[Relay] = false;
     digitalWrite(Relay, HIGH);
 }
 
 void setup()
 {
     Serial.begin(9600);
-    for (int i = 2; i <= 9; i++)
+    for (int i = 2; i <= 8; i++)
     {
         pinMode(i, OUTPUT);
         TurnOff(i);
     }
+    for (int i = 9; i <= 12; i++)
+    {
+        pinMode(i, INPUT_PULLUP);
+    }
     Serial.println("Welcome to Caldera Utopia - modified");
     Serial.println("Type help for a list of commands");
-    state = EEPROM.read(stateAddress);
 }
 
 void loop()
@@ -77,7 +80,6 @@ void loop()
             Serial.println("circulation\truns the circulation program");
             Serial.println("run\truns the main program");
         }
-        EEPROM.update(stateAddress, state);
     }
     switch (state)
     {

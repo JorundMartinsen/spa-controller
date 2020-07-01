@@ -1,22 +1,34 @@
+  boolean lastP1Button = false;
+  boolean lastP1HButton = false;
+  boolean lastP2Button = false;
+  boolean lastBlowerButton = false;
+
+void switchState(boolean current, boolean last, int output){
+  if (current != last && current){
+      if(outputState[output]) {
+        TurnOff(output);
+      }
+      else {
+        TurnOn(output);
+      }
+  }
+}
+
 void run()
 {
+  boolean P1Button = digitalRead(9);
+  boolean P1HButton = digitalRead(10);
+  boolean P2Button = digitalRead(11);
+  boolean BlowerButton = digitalRead(12);
   TurnOn(Circulation);
-  delayer(0, 30);
   TurnOn(Oxidizer);
-  delayer(0, 20);
-  TurnOn(Pump1);
-  delayer(0, 20);
-  TurnOn(Pump2);
-  delayer(0, 20);
-  TurnOn(Blower);
-  delayer(0, 20);
-  TurnOn(Pump1High);
-  delayer(5, 0);
-  TurnOff(Pump2);
-  delayer(0, 20);
-  TurnOff(Pump1);
-  delayer(0, 20);
-  TurnOff(Pump1High);
-  delayer(1, 20);
-  TurnOff(Blower);
+  switchState(P1Button, lastP1Button, Pump1);
+  switchState(P1HButton, lastP1HButton, Pump1High);
+  switchState(P2Button, lastP2Button, Pump2);
+  switchState(BlowerButton, lastBlowerButton, Blower);
+
+  lastP1Button = P1Button;
+  lastP1HButton = P1HButton;
+  lastP2Button = P2Button;
+  lastBlowerButton = BlowerButton;
 }
