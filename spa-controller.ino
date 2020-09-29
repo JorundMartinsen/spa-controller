@@ -1,16 +1,16 @@
+int Heater = 13;
 int Pump1 = 2;
 int Pump1High = 3;
 int Pump2 = 4;
 int Blower = 5;
 int Oxidizer = 6;
 int Circulation = 7;
-int Relay7 = 8;
 
 int stateAddress = 0;
 
 int state = 0;
 int readDelayCounter = 0;
-boolean outputState[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+boolean outputState[7] = {0, 0, 0, 0, 0, 0, 0};
 
 void delayer(int minutes = 0, int seconds = 1)
 {
@@ -32,12 +32,13 @@ void TurnOff(int Relay)
 void setup()
 {
     Serial.begin(9600);
-    for (int i = 2; i <= 8; i++)
+    pinMode(Heater, OUTPUT);
+    for (int i = 1; i <= 7; i++)
     {
         pinMode(i, OUTPUT);
         TurnOff(i);
     }
-    for (int i = 9; i <= 12; i++)
+    for (int i = 8; i <= 12; i++)
     {
         pinMode(i, INPUT_PULLUP);
     }
@@ -97,7 +98,6 @@ void loop()
         relayTester();
         break;
     case 4:
-        Serial.println("Running main program");
         TurnOn(Circulation);
         run();
         break;
