@@ -1,0 +1,1 @@
+boolean outputState[7] = {0, 0, 0, 0, 0, 0, 0};

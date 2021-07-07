@@ -1,32 +1,15 @@
-int Heater = 3;
-int Circulation = 4;
-int Pump2 = 7;
-int Pump1 = 8;
-int Pump1High = 12;
-int Blower = 11;
+#include "addresses.h"
+#include "common.h"
+#include "tools.h"
+#include "cleaner.h"
+#include "airRemoval.h"
+#include "relayTester.h"
+#include "run.ino"
 
 int stateAddress = 0;
 
 int state = 3;
 int readDelayCounter = 0;
-boolean outputState[7] = {0, 0, 0, 0, 0, 0, 0};
-
-void delayer(int minutes = 0, int seconds = 1)
-{
-    delay(seconds * 1000 + minutes * 60000);
-}
-
-void TurnOn(int Relay)
-{
-    outputState[Relay] = true;
-    digitalWrite(Relay, LOW);
-}
-
-void TurnOff(int Relay)
-{
-    outputState[Relay] = false;
-    digitalWrite(Relay, HIGH);
-}
 
 void setup()
 {
