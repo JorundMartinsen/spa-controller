@@ -46,13 +46,12 @@ void controlTemperature(bool CirculationSensor)
 
 void run()
 {
-  boolean CirculationSensor = !digitalRead(8);
+  boolean CirculationSensor = !digitalRead(2);
   boolean P1Button = !digitalRead(9);
   boolean P1HButton = !digitalRead(10);
   boolean P2Button = !digitalRead(11);
   boolean BlowerButton = !digitalRead(12);
   TurnOn(Circulation);
-  TurnOn(Oxidizer);
 
   controlTemperature(CirculationSensor);
 

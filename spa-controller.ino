@@ -1,14 +1,13 @@
-int Heater = 13;
-int Pump1 = 2;
-int Pump1High = 3;
-int Pump2 = 4;
-int Blower = 5;
-int Oxidizer = 6;
-int Circulation = 7;
+int Heater = 3;
+int Circulation = 4;
+int Pump2 = 7;
+int Pump1 = 8;
+int Pump1High = 12;
+int Blower = 11;
 
 int stateAddress = 0;
 
-int state = 0;
+int state = 3;
 int readDelayCounter = 0;
 boolean outputState[7] = {0, 0, 0, 0, 0, 0, 0};
 
@@ -33,15 +32,19 @@ void setup()
 {
     Serial.begin(9600);
     pinMode(Heater, OUTPUT);
-    for (int i = 1; i <= 7; i++)
-    {
-        pinMode(i, OUTPUT);
-        TurnOff(i);
-    }
-    for (int i = 8; i <= 12; i++)
-    {
-        pinMode(i, INPUT_PULLUP);
-    }
+    pinMode(Circulation, OUTPUT);
+    pinMode(Pump2, OUTPUT);
+    pinMode(Pump1, OUTPUT);
+    pinMode(Pump1High, OUTPUT);
+    pinMode(Blower, OUTPUT);
+    TurnOff(Circulation);
+    TurnOff(Pump2);
+    TurnOff(Pump1);
+    TurnOff(Pump1High);
+    TurnOff(Blower);
+    
+        pinMode(2, INPUT_PULLUP);
+    
     Serial.println("Welcome to Caldera Utopia - modified");
     Serial.println("Type help for a list of commands");
 }
@@ -51,6 +54,8 @@ void loop()
     while (Serial.available() > 0)
     {
         String input = Serial.readString();
+        Serial.println("I read: ");
+        Serial.println(input);
         if (input == "clean")
         {
             state = 1;
@@ -73,7 +78,7 @@ void loop()
         }
         else
         {
-            state = 0;
+            state = 3;
             Serial.println("These are the available commands:");
             Serial.println("clean\truns the cleaning program");
             Serial.println("air\tclears the circulation pump for air");
@@ -99,23 +104,21 @@ void loop()
         break;
     case 4:
         TurnOn(Circulation);
-        run();
+        // run();
         break;
     case 5:
-        Serial.println("Running circulation and Oxidizer");
+        Serial.println("Running circulation");
         TurnOn(Circulation);
-        TurnOn(Oxidizer);
         delayer(0, 30);
         TurnOff(Circulation);
-        TurnOff(Oxidizer);
         break;
     default:
-        Serial.println("Awaiting input. Type 'help' for commands - running main program in " + String(60 - readDelayCounter) + " seconds");
+        Serial.println("Awaiting input. Type 'help' for commands - running circulation program in " + String(60 - readDelayCounter) + " seconds");
         delay(1000);
         readDelayCounter += 1;
         if (readDelayCounter > 60)
         {
-            Serial.println("No input given. Running main program");
+            Serial.println("No input given. Running circulation program");
             state = 4;
         }
         break;
