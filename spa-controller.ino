@@ -4,7 +4,8 @@
 #include "cleaner.h"
 #include "airRemoval.h"
 #include "relayTester.h"
-#include "run.ino"
+#include "run.h"
+#include "manual.h"
 
 int stateAddress = 0;
 
@@ -26,7 +27,7 @@ void setup()
     TurnOff(Pump1High);
     TurnOff(Blower);
     
-        pinMode(2, INPUT_PULLUP);
+    pinMode(2, INPUT_PULLUP);
     
     Serial.println("Welcome to Caldera Utopia - modified");
     Serial.println("Type help for a list of commands");
@@ -39,6 +40,11 @@ void loop()
         String input = Serial.readString();
         Serial.println("I read: ");
         Serial.println(input);
+        readDelayCounter = 0;
+        if (state == 6)
+        {
+          state = manual(input, state);
+        }
         if (input == "clean")
         {
             state = 1;
@@ -59,15 +65,20 @@ void loop()
         {
             state = 5;
         }
+        else if (input == "manual")
+        {
+            state = 6;
+        }
         else
         {
-            state = 3;
+            state = 0;
             Serial.println("These are the available commands:");
             Serial.println("clean\truns the cleaning program");
             Serial.println("air\tclears the circulation pump for air");
             Serial.println("test\truns a test on all relay outputs");
             Serial.println("circulation\truns the circulation program");
             Serial.println("run\truns the main program");
+            Serial.println("manua\tenters manual mode");
         }
     }
     switch (state)
@@ -94,6 +105,17 @@ void loop()
         TurnOn(Circulation);
         delayer(0, 30);
         TurnOff(Circulation);
+        break;
+    case 6:
+        Serial.println("Running in manual mode. Type 'exit' to exit manual mode");
+        Serial.println("To turn on an input type 'name on'. To turn off, type 'name off' ");
+        Serial.println("");
+        Serial.println("Available names:");
+        Serial.println("Circulation");
+        Serial.println("Pump1");
+        Serial.println("Pump1High");
+        Serial.println("Pump2");
+        Serial.println("Blower");
         break;
     default:
         Serial.println("Awaiting input. Type 'help' for commands - running circulation program in " + String(60 - readDelayCounter) + " seconds");

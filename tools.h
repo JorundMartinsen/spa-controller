@@ -1,19 +1,7 @@
 #include "common.h"
 
-void switchState(boolean current, boolean last, int output)
-{
-  if (current != last && current)
-  {
-    if (outputState[output])
-    {
-      TurnOff(output);
-    }
-    else
-    {
-      TurnOn(output);
-    }
-  }
-}
+#ifndef TOOLS_H
+#define TOOLS_H
 
 void delayer(int minutes = 0, int seconds = 1)
 {
@@ -31,3 +19,20 @@ void TurnOff(int Relay)
     outputState[Relay] = false;
     digitalWrite(Relay, HIGH);
 }
+
+void switchState(boolean current, boolean last, int output)
+{
+  if (current != last && current)
+  {
+    if (outputState[output])
+    {
+      TurnOff(output);
+    }
+    else
+    {
+      TurnOn(output);
+    }
+  }
+}
+
+#endif
