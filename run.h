@@ -1,55 +1,103 @@
 #include "tools.h"
+#include "temperature.h"
 #include "addresses.h"
 
-boolean lastP1Button = false;
-boolean lastP1HButton = false;
-boolean lastP2Button = false;
-boolean lastBlowerButton = false;
+boolean Power = false;
 
-int temperatureArray[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-int temperatureArrayLength = 20;
+boolean PowerButtonLast = false;
+boolean ProgramButtonLast = false;
 
-void controlTemperature(bool CirculationSensor)
+byte Program = 0;
+
+void SetPowerState()
 {
-  if (CirculationSensor)
+  boolean PowerButton = !digitalRead(10);
+  if (checkButtonState(PowerButton, PowerButtonLast))
   {
-    digitalWrite(Heater, LOW);
-    Serial.println("Circulation detected");
+    Power = !Power;
   }
-  else
+}
+
+void SetProgramState()
+{
+  boolean ProgramButton = !digitalRead(9);
+  if (checkButtonState(ProgramButton, ProgramButtonLast))
   {
-    digitalWrite(Heater, HIGH);
+    Program += 1;
   }
-  int temperatureAvg = 0;
-  for (int i = 0; i < temperatureArrayLength - 1; i++)
+  if (Program > 11)
   {
-    temperatureArray[i] = temperatureArray[i + 1];
-    temperatureAvg += temperatureArray[i + 1];
+    Program = 0;
   }
-  temperatureArray[19] = analogRead(A0);
-  temperatureAvg += temperatureArray[19];
-  temperatureAvg /= temperatureArrayLength;
-  // Serial.println(temperatureAvg);
+}
+
+void setP1HighOn()
+{
+  TurnOff(Pump1);
+  delayer(0, 1);
+  TurnOn(Pump1High);
+  delayer(0, 1);
+  TurnOn(Pump1);
+}
+
+void setP1HighOff()
+{
+  TurnOff(Pump1);
+  delayer(0, 1);
+  TurnOn(Pump1High);
+  delayer(0, 1);
+}
+
+void SetOutputs(byte program)
+{
+  boolean P1H = checkBit(program, 3);
+  boolean P1 = checkBit(program, 2);
+  boolean P2 = checkBit(program, 1);
+  boolean B = checkBit(program, 0);
+
+  if (P2)
+  {
+    TurnOn(Pump2);
+  }
+  if (!P2)
+  {
+    TurnOff(Pump2);
+  }
+
+  if (B)
+  {
+    TurnOn(Blower);
+  }
+  if (!B)
+  {
+    TurnOff(Blower);
+  }
+
+  if (P1H)
+  {
+    setP1HighOn();
+  }
+  if (!P1H)
+  {
+    setP1HighOff();
+  }
+
+  if (P1)
+  {
+    TurnOn(Pump1);
+  }
+  if (!P1)
+  {
+    TurnOff(Pump1);
+  }
 }
 
 void run()
 {
-  boolean CirculationSensor = !digitalRead(2);
-  boolean P1Button = !digitalRead(9);
-  boolean P1HButton = !digitalRead(10);
-  boolean P2Button = !digitalRead(11);
-  boolean BlowerButton = !digitalRead(12);
-  TurnOn(Circulation);
+  controlTemperature();
+  SetPowerState();
+  SetProgramState();
 
-  controlTemperature(CirculationSensor);
-
-  switchState(P1Button, lastP1Button, Pump1);
-  switchState(P1HButton, lastP1HButton, Pump1High);
-  switchState(P2Button, lastP2Button, Pump2);
-  switchState(BlowerButton, lastBlowerButton, Blower);
-
-  lastP1Button = P1Button;
-  lastP1HButton = P1HButton;
-  lastP2Button = P2Button;
-  lastBlowerButton = BlowerButton;
+  SetOutputs(Program);
+  delayer(0, 1);
 }

@@ -1,11 +1,11 @@
 #ifndef ADDRESSES_H
 #define ADDRESSES_H
 
-int Heater = 3;
-int Circulation = 4;
-int Pump2 = 7;
-int Pump1 = 8;
-int Pump1High = 12;
-int Blower = 11;
+byte Heater = 3;
+byte Circulation = 4;
+byte Pump2 = 7;
+byte Pump1 = 8;
+byte Pump1High = 12;
+byte Blower = 11;
 
 #endif

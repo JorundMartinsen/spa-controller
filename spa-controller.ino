@@ -5,12 +5,12 @@
 #include "airRemoval.h"
 #include "relayTester.h"
 #include "run.h"
-#include "manual.h"
+// #include "manual.h"
 
-int stateAddress = 0;
+byte stateAddress = 0;
 
-int state = 3;
-int readDelayCounter = 0;
+byte state = 3;
+byte readDelayCounter = 0;
 
 void setup()
 {
@@ -26,9 +26,9 @@ void setup()
     TurnOff(Pump1);
     TurnOff(Pump1High);
     TurnOff(Blower);
-    
+
     pinMode(2, INPUT_PULLUP);
-    
+
     Serial.println("Welcome to Caldera Utopia - modified");
     Serial.println("Type help for a list of commands");
 }
@@ -41,10 +41,10 @@ void loop()
         Serial.println("I read: ");
         Serial.println(input);
         readDelayCounter = 0;
-        if (state == 6)
-        {
-          state = manual(input, state);
-        }
+        // if (state == 6)
+        // {
+        //   state = manual(input, state);
+        // }
         if (input == "clean")
         {
             state = 1;
@@ -97,8 +97,7 @@ void loop()
         relayTester();
         break;
     case 4:
-        TurnOn(Circulation);
-        // run();
+        run();
         break;
     case 5:
         Serial.println("Running circulation");
