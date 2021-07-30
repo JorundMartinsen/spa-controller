@@ -1,11 +1,11 @@
 #ifndef ADDRESSES_H
 #define ADDRESSES_H
 
-byte Heater = 3;
-byte Circulation = 4;
-byte Pump2 = 7;
-byte Pump1 = 8;
-byte Pump1High = 12;
-byte Blower = 11;
+byte Heater = 13;
+byte Circulation = 7;
+byte Pump2 = 6;
+byte Pump1 = 5;
+byte Pump1High = 4;
+byte Blower = 3;
 
 #endif
