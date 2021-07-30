@@ -1,25 +1,25 @@
 #include "addresses.h"
 
-byte temperatureArray[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+int temperatureArray[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 byte temperatureArrayIdx = 0;
 byte temperatureArrayLength = 20;
 
-byte getTempLimit()
+int getTempLimit()
 {
     return 512;
 }
 
-byte getTemperature()
+int getTemperature()
 {
-    byte temperatureAvg = 0;
+    int temperatureAvg = 0;
 
     temperatureArray[temperatureArrayIdx] = analogRead(A0);
 
-    for (byte i = 0; i < temperatureArrayLength - 1; i++)
+    for (int i = 0; i < temperatureArrayLength - 1; i++)
     {
         temperatureAvg += temperatureArray[i];
     }
-    byte res = temperatureAvg / temperatureArrayLength;
+    int res = temperatureAvg / temperatureArrayLength;
     Serial.println(res);
     return res;
 }
