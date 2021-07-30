@@ -19,11 +19,14 @@ byte getTemperature()
     {
         temperatureAvg += temperatureArray[i];
     }
-    return temperatureAvg / temperatureArrayLength;
+    byte res = temperatureAvg / temperatureArrayLength;
+    Serial.println(res);
+    return res;
 }
 
 void controlTemperature()
 {
+
     if (getTemperature() < getTempLimit())
     {
         digitalWrite(Heater, LOW);
