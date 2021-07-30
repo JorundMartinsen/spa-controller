@@ -30,7 +30,6 @@ void controlTemperature()
     if (getTemperature() < getTempLimit())
     {
         digitalWrite(Heater, LOW);
-        Serial.println("Circulation detected");
     }
     else
         digitalWrite(Heater, HIGH);

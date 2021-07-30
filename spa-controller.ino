@@ -9,7 +9,7 @@
 
 byte stateAddress = 0;
 
-byte state = 3;
+byte state = 0;
 byte readDelayCounter = 0;
 
 void setup()
@@ -21,6 +21,7 @@ void setup()
     pinMode(Pump1, OUTPUT);
     pinMode(Pump1High, OUTPUT);
     pinMode(Blower, OUTPUT);
+    
     TurnOff(Circulation);
     TurnOff(Pump2);
     TurnOff(Pump1);
