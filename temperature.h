@@ -1,5 +1,8 @@
 #include "addresses.h"
 
+// ~25°C -> 22
+
+
 int temperatureArray[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 byte temperatureArrayIdx = 0;
 byte temperatureArrayLength = 20;
