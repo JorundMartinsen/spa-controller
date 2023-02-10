@@ -6,42 +6,37 @@
 boolean Power = false;
 
 boolean PowerButtonLast = false;
-boolean ProgramButtonLast = false;
+boolean ProgramButtonLast = true;
 
-byte Program = 0;
+volatile byte Program = 0;
+
+void IRS_Power(){
+  Program = 0;
+}
+
+void IRS_Program(){
+  Program += 1;
+}
 
 void SetPowerState()
 {
-  boolean PowerButton = !digitalRead(10);
-  if (checkButtonState(PowerButton, PowerButtonLast))
-  {
-    Power = !Power;
-  }
-  PowerButtonLast = PowerButton;
+  boolean PowerButton = !digitalRead(11);
+  if (PowerButton) Program = 0;
 }
 
 void SetProgramState()
 {
-  boolean ProgramButton = !digitalRead(9);
+  boolean ProgramButton = !digitalRead(12);
   if (checkButtonState(ProgramButton, ProgramButtonLast))
   {
     Program += 1;
   }
-  //ProgramButtonLast = ProgramButton;
-  Serial.print("Program: ");
-  Serial.println(Program);
+  ProgramButtonLast = ProgramButton;
 
-  if (Program > 11)
+  if (Program > 7)
   {
     Program = 0;
   }
-
-  // Serial.print("Current button: ");
-  // if (ProgramButton) Serial.println("true");
-  // else Serial.println("false");
-  // Serial.print("Last button: ");
-  // if (ProgramButtonLast) Serial.println("true");
-  // else Serial.println("false");
 }
 
 void setP1HighOn()
@@ -78,24 +73,6 @@ void SetOutputs(byte program)
   {
     P1 = false;
   }
-
-  Serial.println("H 1 2 B");
-  if (P1H)
-    Serial.print("1 ");
-  else
-    Serial.print("0 ");
-  if (P1)
-    Serial.print("1 ");
-  else
-    Serial.print("0 ");
-  if (P2)
-    Serial.print("1 ");
-  else
-    Serial.print("0 ");
-  if (B)
-    Serial.println("1 ");
-  else
-    Serial.println("0 ");
 
   if (P2 && !outputState[Pump2])
   {
@@ -145,5 +122,5 @@ void run()
   SetProgramState();
 
   SetOutputs(Program);
-  delayer(0, 5);
+  delayer(0, 0, 200);
 }

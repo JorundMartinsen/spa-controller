@@ -8,4 +8,7 @@ byte Pump1 = 5;
 byte Pump1High = 4;
 byte Blower = 3;
 
+byte PowerButton = 2;
+byte ProgramButton = 3;
+
 #endif

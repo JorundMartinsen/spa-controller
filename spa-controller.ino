@@ -9,7 +9,7 @@
 
 byte stateAddress = 0;
 
-byte state = 0;
+byte state = 4;
 byte readDelayCounter = 0;
 
 void setup()
@@ -28,7 +28,11 @@ void setup()
     TurnOff(Pump1High);
     TurnOff(Blower);
 
-    pinMode(2, INPUT_PULLUP);
+    pinMode(PowerButton, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(PowerButton), IRS_Power, RISING);
+    
+    pinMode(ProgramButton, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(ProgramButton), IRS_Program, RISING);
 
     Serial.println("Welcome to Caldera Utopia - modified");
     Serial.println("Type help for a list of commands");

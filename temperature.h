@@ -8,31 +8,45 @@ byte temperatureArrayLength = 20;
 
 int getTempLimit()
 {
-    return 512;
+  // 620 => ~42°C
+  // 575 => ~39°C
+  // 425 => ~25°C
+  int temperature = 37;
+  return 134 + 8.6 * temperature + 0.07 * temperature * temperature;
 }
 
 int getTemperature()
 {
     int temperatureAvg = 0;
 
-    temperatureArray[temperatureArrayIdx] = analogRead(A0);
+    return analogRead(A0);
 
-    for (int i = 0; i < temperatureArrayLength - 1; i++)
-    {
-        temperatureAvg += temperatureArray[i];
-    }
-    int res = temperatureAvg / temperatureArrayLength;
-    Serial.println(res);
-    return res;
+
+    // temperatureArray[temperatureArrayIdx] = 
+
+//    for (int i = 0; i < temperatureArrayLength - 1; i++)
+//    {
+//        temperatureAvg += temperatureArray[i];
+//    }
+//    int res = temperatureAvg / temperatureArrayLength;
+//    
+//    return res;
 }
 
 void controlTemperature()
 {
-
-    if (getTemperature() < getTempLimit())
+  int temperature = getTemperature();
+  Serial.println(temperature);
+  Serial.println(getTempLimit());
+    if (temperature < (getTempLimit() - 10))
     {
-        digitalWrite(Heater, LOW);
+        TurnOn(Heater);
+        Serial.print(" Heating");
     }
-    else
-        digitalWrite(Heater, HIGH);
+    else if (temperature > (getTempLimit() + 10))
+    {
+        TurnOff(Heater);
+        Serial.print(" Not Heating");
+    }
+    Serial.println();
 }

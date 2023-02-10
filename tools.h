@@ -3,9 +3,9 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
-void delayer(byte minutes = 0, byte seconds = 1)
+void delayer(byte minutes = 0, byte seconds = 1, byte milliseconds = 0)
 {
-    delay(seconds * 1000 + minutes * 60000);
+    delay(milliseconds + (seconds * 1000) + (minutes * 60000));
 }
 
 void TurnOn(byte Relay)
